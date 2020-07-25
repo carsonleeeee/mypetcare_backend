@@ -1,8 +1,12 @@
-const functions = require('firebase-functions');
+const functions = require("firebase-functions");
+const express = require("express");
+const app = express();
+const userRouter = require("./api/controllers/user_controller");
+const bookingRouter = require("./api/controllers/booking_controller");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+app.use(express.json());
+app.use("/clinicList", bookingRouter);
+app.use("/userList", userRouter);
+
+exports.api = functions.https.onRequest(app);
+exports.setupdb = functions.https.onRequest(require("./setup_database"));
